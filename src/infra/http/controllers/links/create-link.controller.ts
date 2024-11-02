@@ -36,6 +36,7 @@ export class CreateShortLinkController {
       return HttpLinksPresenter.toHttp(createdLink)
     }
 
+    // tratativa de erro para caso for um erro 500
     if (result.isLeft()) {
       throw new BadRequestException()
     }
