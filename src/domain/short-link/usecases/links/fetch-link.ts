@@ -1,7 +1,8 @@
-import { Either, left, right } from '@/core/types/either'
-import { LinksRepository } from '../../application/repositories/links-repository'
-import { Link } from '../../enterprise/entities/link'
-import { ResourceNotFoundError } from '../../../../core/errors/errors/resource-not-found-error'
+import { Either, right } from '@/core/types/either'
+import { LinksRepository } from '@/domain/short-link/application/repositories/links-repository'
+import { Link } from '@/domain/short-link/enterprise/entities/link'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+import { Injectable } from '@nestjs/common'
 
 interface FetchLinkRequest {
   page: number
@@ -13,6 +14,7 @@ export type FetchLinksResponse = Either<
   { links: Link[] }
 >
 
+@Injectable()
 export class FetchLinkUseCase {
   constructor(private linkRepository: LinksRepository) {}
 
@@ -23,11 +25,6 @@ export class FetchLinkUseCase {
     const findManyLinks = await this.linkRepository.findManyByUserId(userId, {
       page,
     })
-
-    // validar se existe ums lista de links
-    if (!findManyLinks) {
-      return left(new ResourceNotFoundError())
-    }
 
     return right({ links: findManyLinks })
   }

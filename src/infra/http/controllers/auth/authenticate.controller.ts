@@ -12,6 +12,7 @@ import { AuthGuard } from '@nestjs/passport'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../../pipes/zod-validation-pipe'
 import { WrongCredentialsError } from '@/domain/short-link/usecases/errors/wrong-credentials-erros'
+import { Public } from '@/infra/auth/public'
 
 const authenticateBodySchema = z.object({
   email: z.string().email(),
@@ -21,6 +22,7 @@ const authenticateBodySchema = z.object({
 type AuthenticateBody = z.infer<typeof authenticateBodySchema>
 
 @Controller('/sessions')
+@Public()
 export class AutheticateController {
   constructor(private authenticateUseCase: AuthenticateUserUsecase) {}
 

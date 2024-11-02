@@ -1,13 +1,15 @@
 import { Either, left, right } from '@/core/types/either'
-import { LinksRepository } from '../../application/repositories/links-repository'
-import { ResourceNotFoundError } from '../../../../core/errors/errors/resource-not-found-error'
+import { LinksRepository } from '@/domain/short-link/application/repositories/links-repository'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+import { Injectable } from '@nestjs/common'
 
 interface ShortLinkRequest {
   linkId: string
 }
 
-type DeleteShortLinkResponse = Either<ResourceNotFoundError, {}>
+type DeleteShortLinkResponse = Either<ResourceNotFoundError, boolean>
 
+@Injectable()
 export class DeleteShortLinkUseCase {
   constructor(private linkRepository: LinksRepository) {}
 
@@ -15,16 +17,19 @@ export class DeleteShortLinkUseCase {
     linkId,
   }: ShortLinkRequest): Promise<DeleteShortLinkResponse> {
     // buscar link pelo id
-    const findLink = await this.linkRepository.findById(linkId)
+    const link = await this.linkRepository.findById(linkId)
 
     // validar se o link existe
-    if (!findLink) {
+    if (!link) {
       return left(new ResourceNotFoundError())
     }
 
-    // deletar o link
-    await this.linkRepository.delete(findLink)
+    // aplicar soft delete
+    link.setDeletedAt()
 
-    return right({})
+    // salvar link deletado
+    await this.linkRepository.save(link)
+
+    return right(true)
   }
 }

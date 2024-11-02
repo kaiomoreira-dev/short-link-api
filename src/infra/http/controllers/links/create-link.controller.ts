@@ -1,14 +1,11 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Post,
-  UseGuards,
-} from '@nestjs/common'
+import { BadRequestException, Body, Controller, Post } from '@nestjs/common'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
 import { CreateShortLinkUseCase } from '@/domain/short-link/usecases/links/create-short-link'
-import { HttpLinksPresenter } from '../../presenters/http-links-presenter'
+import { HttpLinksPresenter } from '@/infra/http/presenters/http-links-presenter'
+import { CurrentUser } from '@/infra/auth/current-user-decorator'
+import { UserPayload } from '@/infra/auth/jwt-strategy'
+import { Public } from '@/infra/auth/public'
 
 const createLinkSchema = z.object({
   originalUrl: z.string().url().min(1),
@@ -19,15 +16,21 @@ const bodyValidationPipe = new ZodValidationPipe(createLinkSchema)
 type CreateLinkSchema = z.infer<typeof createLinkSchema>
 
 @Controller('/links')
+@Public()
 export class CreateShortLinkController {
   constructor(private createLinkUseCase: CreateShortLinkUseCase) {}
 
   @Post()
-  async handle(@Body(bodyValidationPipe) body: CreateLinkSchema) {
+  async handle(
+    @Body(bodyValidationPipe) body: CreateLinkSchema,
+    @CurrentUser() user?: UserPayload,
+  ) {
     const { originalUrl } = body
+    const userId = user ? user.sub : null
 
     const result = await this.createLinkUseCase.execute({
       originalUrl,
+      userId,
     })
 
     if (result.isRight()) {

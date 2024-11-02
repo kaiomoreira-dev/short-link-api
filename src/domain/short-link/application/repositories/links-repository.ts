@@ -12,6 +12,5 @@ export abstract class LinksRepository {
   ): Promise<Link[]>
 
   abstract create(link: Link): Promise<Link>
-  abstract delete(link: Link): Promise<void>
   abstract save(link: Link): Promise<Link>
 }

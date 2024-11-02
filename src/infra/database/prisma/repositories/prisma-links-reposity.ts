@@ -43,6 +43,7 @@ export class PrismaLinksRepository implements LinksRepository {
     const links = await this.prisma.link.findMany({
       where: {
         userId,
+        deletedAt: null,
       },
       orderBy: {
         createdAt: 'desc',
@@ -62,17 +63,6 @@ export class PrismaLinksRepository implements LinksRepository {
     })
 
     return PrismaLinkMapper.toDomain(createLink)
-  }
-
-  async delete(link: Link): Promise<void> {
-    const data = PrismaLinkMapper.toPrisma(link)
-
-    await this.prisma.link.update({
-      where: {
-        id: data.id,
-      },
-      data,
-    })
   }
 
   async save(link: Link): Promise<Link> {

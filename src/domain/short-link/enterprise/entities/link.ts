@@ -64,6 +64,7 @@ export class Link extends Entity<LinkProps> {
 
   countClick() {
     this.props.clicks++
+    this.touch()
   }
 
   public touch() {

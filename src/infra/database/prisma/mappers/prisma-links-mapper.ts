@@ -13,6 +13,7 @@ export class PrismaLinkMapper {
         userId: raw.userId ? new UniqueEntityId(raw.userId) : null,
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
+        deletedAt: raw.deletedAt,
       },
       new UniqueEntityId(raw.id),
     )

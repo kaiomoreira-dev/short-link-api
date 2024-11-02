@@ -13,6 +13,7 @@ import { z } from 'zod'
 import { RegisterUserUsecase } from '@/domain/short-link/usecases/users/register-user-usecase'
 import { HttpUsersPresenter } from '../../presenters/http-users-presenter'
 import { UserAlreadyExistsError } from '@/domain/short-link/usecases/errors/user-already-exists-error'
+import { Public } from '@/infra/auth/public'
 
 const registerUserBodySchema = z.object({
   name: z.string(),
@@ -23,6 +24,7 @@ const registerUserBodySchema = z.object({
 type RegisterUserBody = z.infer<typeof registerUserBodySchema>
 
 @Controller('/users')
+@Public()
 export class RegisterUserController {
   constructor(private registerUserUsecase: RegisterUserUsecase) {}
 

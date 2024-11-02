@@ -5,23 +5,22 @@ import {
   Get,
   Param,
   Redirect,
-  UseGuards,
 } from '@nestjs/common'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
 import { RedirectToLinkUseCase } from '@/domain/short-link/usecases/links/redirect-to-link'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+import { Public } from '@/infra/auth/public'
 
 // Esquema de validação para o `shortCode`
-const shortCodeQueryParamSchema = z.string().min(1)
+const shortCodeParamSchema = z.string().min(1)
 
-const paramRedirectValidationPipe = new ZodValidationPipe(
-  shortCodeQueryParamSchema,
-)
+const paramRedirectValidationPipe = new ZodValidationPipe(shortCodeParamSchema)
 
-type ShortCodeParam = z.infer<typeof shortCodeQueryParamSchema>
+type ShortCodeParam = z.infer<typeof shortCodeParamSchema>
 
 @Controller('/:shortCode')
+@Public()
 export class RedirectToLinkController {
   constructor(private redirectToLinkUseCase: RedirectToLinkUseCase) {}
 
