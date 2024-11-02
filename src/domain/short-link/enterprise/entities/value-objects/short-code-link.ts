@@ -20,7 +20,7 @@ export class ShortUrl {
       for (let i = 0; i < 6; i++) {
         shortCode += chars.charAt(Math.floor(Math.random() * chars.length))
       }
-      shortUrl = `http://localhost:3333/${shortCode}`
+      shortUrl = `http://localhost:3333/${shortCode}` // colocar env da url da aplicação
     }
 
     return shortUrl

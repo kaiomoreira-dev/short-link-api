@@ -20,7 +20,7 @@ export class RedirectToLinkUseCase {
   async execute({
     shortCode,
   }: RedirectToLinkRequest): Promise<RedirectToLinkResponse> {
-    const shortUrl = `http://localhost:3333/${shortCode}`
+    const shortUrl = `http://localhost:3333/${shortCode}` // colocar env da url da aplicação
 
     // verificar se o link existe
     const user = await this.linksRepository.findByShortCode(shortUrl)
