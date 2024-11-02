@@ -38,15 +38,15 @@ $ npx prisma migrate dev
 
 ```bash
 # watch mode
-$ npm run start:dev
+$ pnpm run start:dev
 
 # production mode
-$ npm run start:prod
+$ pnpm run start:prod
 ```
 ## Test
 
 ```bash
 # test units
-$ npm run test:unit
+$ pnpm run test:unit
 ```
 
