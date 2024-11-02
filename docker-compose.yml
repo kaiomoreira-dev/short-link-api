@@ -8,4 +8,4 @@ services:
     environment:
       - POSTGRESQL_USERNAME=docker 
       - POSTGRESQL_PASSWORD=c53818503084abae876e82b1aaf50aa5
-      - POSTGRESQL_DATABASE=short_link_db
+      - POSTGRESQL_DATABASE=shortlink_db

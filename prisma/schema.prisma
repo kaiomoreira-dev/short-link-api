@@ -35,7 +35,7 @@ model Link {
   userId String? @map("user_id")
 
   originalUrl String  @map("original_url")
-  shortUrl    String? @map("short_url")
+  shortCode   String? @unique @map("short_url")
   clicks      Decimal @default(0)
 
   createdAt DateTime  @default(now()) @map("created_at")
