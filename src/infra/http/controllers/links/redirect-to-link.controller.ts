@@ -32,6 +32,8 @@ export class RedirectToLinkController {
   ) {
     const result = await this.redirectToLinkUseCase.execute({ shortCode })
 
+    // tratativa de erro para quando nao encontrar o link
+    // e para caso for um erro 500
     if (result.isLeft()) {
       const error = result.value
 
