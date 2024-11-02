@@ -29,6 +29,11 @@ export class EditShortLinkUseCase {
       return left(new ResourceNotFoundError())
     }
 
+    // validar se o link esta ativo
+    if (!link.isActive()) {
+      return left(new ResourceNotFoundError())
+    }
+
     // editar o link
     link.originalUrl = newOriginalUrl
 

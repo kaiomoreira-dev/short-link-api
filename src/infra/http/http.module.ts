@@ -13,6 +13,8 @@ import { FetchLinkController } from './controllers/links/fetch-links.controller'
 import { FetchLinkUseCase } from '@/domain/short-link/usecases/links/fetch-link'
 import { DeleteShortLinkController } from './controllers/links/delete-link.controller'
 import { DeleteShortLinkUseCase } from '@/domain/short-link/usecases/links/delete-link'
+import { EditShortLinkController } from './controllers/links/edit-link.controller'
+import { EditShortLinkUseCase } from '@/domain/short-link/usecases/links/edit-link'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -21,6 +23,7 @@ import { DeleteShortLinkUseCase } from '@/domain/short-link/usecases/links/delet
     FetchLinkController,
     RedirectToLinkController,
     DeleteShortLinkController,
+    EditShortLinkController,
     AutheticateController,
     RegisterUserController,
   ],
@@ -28,9 +31,10 @@ import { DeleteShortLinkUseCase } from '@/domain/short-link/usecases/links/delet
     CreateShortLinkUseCase,
     FetchLinkUseCase,
     RedirectToLinkUseCase,
+    DeleteShortLinkUseCase,
+    EditShortLinkUseCase,
     AuthenticateUserUsecase,
     RegisterUserUsecase,
-    DeleteShortLinkUseCase,
   ],
 })
 export class HttpModule {}
