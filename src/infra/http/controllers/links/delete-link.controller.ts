@@ -6,7 +6,6 @@ import {
   Param,
 } from '@nestjs/common'
 import { DeleteShortLinkUseCase } from '@/domain/short-link/usecases/links/delete-link'
-import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
 @Controller('/links/:id')
 export class DeleteShortLinkController {
@@ -20,15 +19,7 @@ export class DeleteShortLinkController {
     })
 
     if (result.isLeft()) {
-      const error = result.value
-
-      switch (error.constructor) {
-        case ResourceNotFoundError:
-          throw new BadRequestException(error.message)
-
-        default:
-          throw new BadRequestException(error.message)
-      }
+      throw new BadRequestException()
     }
   }
 }
