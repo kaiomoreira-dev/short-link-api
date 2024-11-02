@@ -13,6 +13,7 @@ import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt-strategy'
 import { Public } from '@/infra/auth/public'
 import { EditShortLinkUseCase } from '@/domain/short-link/usecases/links/edit-link'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
 const editLinkSchema = z.object({
   newOriginalUrl: z.string().url().min(1),
@@ -38,15 +39,22 @@ export class EditShortLinkController {
       linkId,
     })
 
+    if (result.isLeft()) {
+      const error = result.value
+
+      switch (error.constructor) {
+        case ResourceNotFoundError:
+          throw new BadRequestException(error.message)
+
+        default:
+          throw new BadRequestException(error.message)
+      }
+    }
+
     if (result.isRight()) {
       const editdLink = result.value.link
 
       return HttpLinksPresenter.toHttp(editdLink)
-    }
-
-    // tratativa de erro para caso for um erro 500
-    if (result.isLeft()) {
-      throw new BadRequestException()
     }
   }
 }
