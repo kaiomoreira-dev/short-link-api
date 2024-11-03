@@ -52,6 +52,6 @@ $ npm run start:prod
 
 ```bash
 # test units
-$ npm run test:unit
+$ npm run test
 ```
 
