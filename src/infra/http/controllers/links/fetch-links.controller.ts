@@ -33,27 +33,28 @@ export class FetchLinkController {
     @Query('page', queryValidationPipe) page: PageQueryParam,
     @CurrentUser() user?: UserPayload,
   ) {
-    const { sub: userId } = user
+    throw new Error("My first Sentry error!");
+    // const { sub: userId } = user
 
-    const result = await this.fetchLinkUseCase.execute({
-      page,
-      userId,
-    })
+    // const result = await this.fetchLinkUseCase.execute({
+    //   page,
+    //   userId,
+    // })
 
-    if (result.isLeft()) {
-      const error = result.value
+    // if (result.isLeft()) {
+    //   const error = result.value
 
-      switch (error.constructor) {
-        case ResourceNotFoundError:
-          throw new NotFoundException(error.message)
+    //   switch (error.constructor) {
+    //     case ResourceNotFoundError:
+    //       throw new NotFoundException(error.message)
 
-        default:
-          throw new BadRequestException(error.message)
-      }
-    }
+    //     default:
+    //       throw new BadRequestException(error.message)
+    //   }
+    // }
 
-    if (result.isRight()) {
-      return result.value.links.map(HttpLinksPresenter.toHttp)
-    }
+    // if (result.isRight()) {
+    //   return result.value.links.map(HttpLinksPresenter.toHttp)
+    // }
   }
 }

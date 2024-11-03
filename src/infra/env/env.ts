@@ -16,6 +16,7 @@ export const envSchema = z.object({
   REDIS_DB: z.coerce.number().optional().default(0),
   REDIS_PASSWORD: z.string().optional().default(''),
   REDIS_USERNAME: z.string().optional().default('default'),
+  SENTRY_DNS: z.string().optional(),
 })
 
 export type Env = z.infer<typeof envSchema>
