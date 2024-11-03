@@ -15,10 +15,8 @@ jobs:
           node-version: 20
           cache: 'pnpm'
       
-      # Configura o pnpm no ambiente
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8 # ou a versão que você preferir
+      # Instala manualmente o pnpm
+      - run: npm install -g pnpm
 
       - run: pnpm install
 
