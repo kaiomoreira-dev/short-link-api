@@ -31,24 +31,27 @@ export class RedirectToLinkController {
   ) {
     const result = await this.redirectToLinkUseCase.execute({ shortCode })
 
+    throw new Error("My first Sentry error!");
+   
+
     // tratativa de erro para quando nao encontrar o link
-    // e para caso for um erro 500
-    if (result.isLeft()) {
-      const error = result.value
+  //   // e para caso for um erro 500
+  //   if (result.isLeft()) {
+  //     const error = result.value
 
-      switch (error.constructor) {
-        case ResourceNotFoundError:
-          throw new NotFoundException(error.message)
+  //     switch (error.constructor) {
+  //       case ResourceNotFoundError:
+  //         throw new NotFoundException(error.message)
 
-        default:
-          throw new BadRequestException(error.message)
-      }
-    }
+  //       default:
+  //         throw new BadRequestException(error.message)
+  //     }
+  //   }
 
-    if (result.isRight()) {
-      const originalUrl = result.value.link.originalUrl
+  //   if (result.isRight()) {
+  //     const originalUrl = result.value.link.originalUrl
 
-      return { url: originalUrl, statusCode: 302 }
-    }
+  //     return { url: originalUrl, statusCode: 302 }
+  //   }
   }
 }
