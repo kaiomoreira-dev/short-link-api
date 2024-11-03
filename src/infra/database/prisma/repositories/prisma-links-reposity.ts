@@ -29,14 +29,14 @@ export class PrismaLinksRepository implements LinksRepository {
 
   async findByShortCode(shortUrl: string): Promise<Link | null> {
     // verificar se ja existe um cache para esse link
-    const cachedLink = await this.cacheRepository.get(`link:${shortUrl}`)
+    // const cachedLink = await this.cacheRepository.get(`link:${shortUrl}`)
 
-    // se existir, retornar o cache
-    if (cachedLink) {
-      const link = JSON.parse(cachedLink)
+    // // se existir, retornar o cache
+    // if (cachedLink) {
+    //   const link = JSON.parse(cachedLink)
 
-      return PrismaLinkMapper.toDomain(link)
-    }
+    //   return PrismaLinkMapper.toDomain(link)
+    // }
 
     const link = await this.prisma.link.findUnique({
       where: {
@@ -48,10 +48,10 @@ export class PrismaLinksRepository implements LinksRepository {
       return null
     }
 
-    await this.cacheRepository.set(
-      `link:${link.shortUrl}`,
-      JSON.stringify(link),
-    )
+    // await this.cacheRepository.set(
+    //   `link:${link.shortUrl}`,
+    //   JSON.stringify(link),
+    // )
 
     const linkDetails = PrismaLinkMapper.toDomain(link)
 
@@ -100,9 +100,9 @@ export class PrismaLinksRepository implements LinksRepository {
     const linkDetails = PrismaLinkMapper.toDomain(createLink)
 
     // Limpar cache do link
-    await this.cacheRepository.delete(
-      `link:${linkDetails.shortUrl.value}:details`,
-    )
+    // await this.cacheRepository.delete(
+    //   `link:${linkDetails.shortUrl.value}:details`,
+    // )
 
     return linkDetails
   }
