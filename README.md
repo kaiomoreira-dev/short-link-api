@@ -15,7 +15,7 @@
 * Incorporar filas para processamento assíncrono de cliques: Usar filas de mensagens para contabilizar cliques de forma assíncrona permite lidar com um volume alto de acessos sem impactar a performance do sistema principal, aumentando a capacidade de processamento.
 
 ## Node Version
-* >=v18 <=v22
+* '>=v18 <=v22'
 
 ## Installation
 ```bash
