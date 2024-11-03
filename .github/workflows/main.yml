@@ -13,11 +13,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'npm'
+          cache: 'pnpm'
           
-      - run: npm ci
+      - run: pnpm ci
 
-      - run: npm run test:unit
+      - run: pnpm run test:unit
         env:
           NODE_ENV: development
           DATABASE_URL: postgresql://default:1ebd9d49b83bd47e@localhost:5432/shortlink_db?schema=public

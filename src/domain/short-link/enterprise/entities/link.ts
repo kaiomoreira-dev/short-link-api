@@ -82,6 +82,8 @@ export class Link extends Entity<LinkProps> {
         clicks: props.clicks ?? 0,
         shortUrl: props.shortUrl ?? ShortUrl.create(props.originalUrl), // criar env variavel mais pra frente
         userId: props.userId ?? null,
+        deletedAt: props.deletedAt ?? null,
+        updatedAt: props.updatedAt ?? null,
       },
       id,
     )

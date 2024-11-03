@@ -1,6 +1,5 @@
 import { InMemoryLinksRepository } from 'test/repositories/in-memory-links-repository'
 import { CreateShortLinkUseCase } from './create-short-link'
-import { faker } from '@faker-js/faker'
 import { EditShortLinkUseCase } from './edit-link'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { makeLink } from 'test/factories/make-link'
