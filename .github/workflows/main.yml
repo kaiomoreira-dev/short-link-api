@@ -17,7 +17,7 @@ jobs:
           
       - run: npm ci
 
-      - run: npm run test:unit
+      - run: npm run test
         env:
           NODE_ENV: development
           DATABASE_URL: postgresql://default:1ebd9d49b83bd47e@localhost:5432/shortlink_db?schema=public
