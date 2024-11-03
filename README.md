@@ -24,7 +24,7 @@
 
 ## Installation
 ```bash
-$ pnpm install
+$ npm install
 ```
 
 ## Docker
@@ -43,15 +43,15 @@ $ npx prisma migrate dev
 
 ```bash
 # watch mode
-$ pnpm run start:dev
+$ npm run start:dev
 
 # production mode
-$ pnpm run start:prod
+$ npm run start:prod
 ```
 ## Test
 
 ```bash
 # test units
-$ pnpm run test:unit
+$ npm run test:unit
 ```
 
