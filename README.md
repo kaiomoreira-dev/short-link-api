@@ -14,6 +14,8 @@
 
 * Incorporar filas para processamento assíncrono de cliques: Usar filas de mensagens para contabilizar cliques de forma assíncrona permite lidar com um volume alto de acessos sem impactar a performance do sistema principal, aumentando a capacidade de processamento.
 
+* Para otimizar o desempenho e reduzir a carga no banco de dados, implementamos uma estratégia de caching que armazena os detalhes dos links em um sistema de cache em memória (como Redis). Ao acessar um link, o aplicativo primeiro verifica se as informações estão disponíveis no cache, melhorando significativamente o tempo de resposta. Caso os dados não estejam no cache, buscamos no banco de dados e os armazenamos para futuras requisições. Após cada atualização de contagem de cliques, o cache é limpo ou atualizado, garantindo que as informações estejam sempre sincronizadas. Essa abordagem não apenas reduz a latência e a carga no banco de dados, mas também facilita a escalabilidade da aplicação.
+
 ## Node Version
 * '>=v18 <=v22'
 
