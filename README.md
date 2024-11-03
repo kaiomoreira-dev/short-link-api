@@ -17,6 +17,9 @@
 ## Node Version
 * '>=v18 <=v22'
 
+# Cloud Provider
+* Railway: https://short-link-api.up.railway.app/
+
 ## Installation
 ```bash
 $ pnpm install
