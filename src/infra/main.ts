@@ -1,12 +1,11 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
-import { ConfigService } from '@nestjs/config'
-import { Env } from './env'
+import { EnvService } from './env/env.service'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
-  const configService = app.get<ConfigService<Env, true>>(ConfigService)
+  const configService = app.get(EnvService)
 
   // Habilita o CORS com configurações
   app.enableCors({
@@ -16,7 +15,7 @@ async function bootstrap() {
     credentials: true, // Para permitir cookies
   })
 
-  const port = configService.get('PORT', { infer: true })
+  const port = configService.get('PORT')
 
   await app.listen(port)
 }

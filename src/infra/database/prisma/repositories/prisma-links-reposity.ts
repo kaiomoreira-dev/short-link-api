@@ -4,10 +4,15 @@ import { Link } from '@/domain/short-link/enterprise/entities/link'
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma.service'
 import { PrismaLinkMapper } from '../mappers/prisma-links-mapper'
+import { CacheRepository } from '@/infra/cache/cache-repository'
 
 @Injectable()
 export class PrismaLinksRepository implements LinksRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private cacheRepository: CacheRepository,
+  ) {}
+
   async findById(id: string): Promise<Link | null> {
     const link = await this.prisma.link.findUnique({
       where: {
@@ -23,6 +28,16 @@ export class PrismaLinksRepository implements LinksRepository {
   }
 
   async findByShortCode(shortUrl: string): Promise<Link | null> {
+    // verificar se ja existe um cache para esse link
+    const cachedLink = await this.cacheRepository.get(`link:${shortUrl}`)
+
+    // se existir, retornar o cache
+    if (cachedLink) {
+      const link = JSON.parse(cachedLink)
+
+      return PrismaLinkMapper.toDomain(link)
+    }
+
     const link = await this.prisma.link.findUnique({
       where: {
         shortUrl,
@@ -33,7 +48,14 @@ export class PrismaLinksRepository implements LinksRepository {
       return null
     }
 
-    return PrismaLinkMapper.toDomain(link)
+    await this.cacheRepository.set(
+      `link:${link.shortUrl}`,
+      JSON.stringify(link),
+    )
+
+    const linkDetails = PrismaLinkMapper.toDomain(link)
+
+    return linkDetails
   }
 
   async findManyByUserId(
@@ -75,6 +97,13 @@ export class PrismaLinksRepository implements LinksRepository {
       data,
     })
 
-    return PrismaLinkMapper.toDomain(createLink)
+    const linkDetails = PrismaLinkMapper.toDomain(createLink)
+
+    // Limpar cache do link
+    await this.cacheRepository.delete(
+      `link:${linkDetails.shortUrl.value}:details`,
+    )
+
+    return linkDetails
   }
 }

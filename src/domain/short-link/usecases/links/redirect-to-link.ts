@@ -3,6 +3,7 @@ import { LinksRepository } from '../../application/repositories/links-repository
 import { ResourceNotFoundError } from '../../../../core/errors/errors/resource-not-found-error'
 import { Link } from '../../enterprise/entities/link'
 import { Injectable } from '@nestjs/common'
+import { EnvService } from '@/infra/env/env.service'
 
 interface RedirectToLinkRequest {
   shortCode: string
@@ -15,27 +16,37 @@ export type RedirectToLinkResponse = Either<
 
 @Injectable()
 export class RedirectToLinkUseCase {
-  constructor(private linksRepository: LinksRepository) {}
+  constructor(
+    private linksRepository: LinksRepository,
+    private envService: EnvService,
+  ) {}
 
   async execute({
     shortCode,
   }: RedirectToLinkRequest): Promise<RedirectToLinkResponse> {
-    const shortUrl = `http://localhost:3333/${shortCode}` // colocar env da url da aplicação
+    const NODE_ENV = this.envService.get('NODE_ENV')
+    const API_DEVELOPMENT_URL = this.envService.get('API_DEVELOPMENT_URL')
+    const API_PRODUCTION_URL = this.envService.get('API_PRODUCTION_URL')
+
+    const API_URL =
+      NODE_ENV === 'development' ? API_DEVELOPMENT_URL : API_PRODUCTION_URL
+
+    const shortUrl = `${API_URL}/${shortCode}` // colocar env da url da aplicação
 
     // verificar se o link existe
-    const user = await this.linksRepository.findByShortCode(shortUrl)
+    const link = await this.linksRepository.findByShortCode(shortUrl)
 
     // verificar se o link existe
-    if (!user) {
+    if (!link) {
       return left(new ResourceNotFoundError())
     }
 
     // contabilizar o acesso ao link
-    user.countClick()
+    link.countClick()
 
     // atualizar o contador de acessos no repositório
-    await this.linksRepository.save(user)
+    await this.linksRepository.save(link)
 
-    return right({ link: user })
+    return right({ link })
   }
 }

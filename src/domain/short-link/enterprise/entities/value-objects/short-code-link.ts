@@ -1,3 +1,5 @@
+import { EnvService } from '@/infra/env/env.service'
+
 export class ShortUrl {
   value: string
 
@@ -12,6 +14,7 @@ export class ShortUrl {
   private static generateCode(value: string): string {
     let shortUrl = ''
     let shortCode = ''
+
     if (value.includes('localhost')) {
       shortUrl = value
     } else {
@@ -20,7 +23,17 @@ export class ShortUrl {
       for (let i = 0; i < 6; i++) {
         shortCode += chars.charAt(Math.floor(Math.random() * chars.length))
       }
-      shortUrl = `http://localhost:3333/${shortCode}` // colocar env da url da aplicação
+      const NODE_ENV = EnvService.getInstance().get('NODE_ENV')
+      const API_DEVELOPMENT_URL = EnvService.getInstance().get(
+        'API_DEVELOPMENT_URL',
+      )
+      const API_PRODUCTION_URL =
+        EnvService.getInstance().get('API_PRODUCTION_URL')
+
+      const API_URL =
+        NODE_ENV === 'development' ? API_DEVELOPMENT_URL : API_PRODUCTION_URL
+
+      shortUrl = `${API_URL}/${shortCode}`
     }
 
     return shortUrl

@@ -15,9 +15,10 @@ import { DeleteShortLinkController } from './controllers/links/delete-link.contr
 import { DeleteShortLinkUseCase } from '@/domain/short-link/usecases/links/delete-link'
 import { EditShortLinkController } from './controllers/links/edit-link.controller'
 import { EditShortLinkUseCase } from '@/domain/short-link/usecases/links/edit-link'
+import { EnvModule } from '../env/env.module'
 
 @Module({
-  imports: [DatabaseModule, CryptographyModule],
+  imports: [DatabaseModule, CryptographyModule, EnvModule],
   controllers: [
     CreateShortLinkController,
     FetchLinkController,

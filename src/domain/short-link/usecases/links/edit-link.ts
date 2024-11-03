@@ -30,7 +30,7 @@ export class EditShortLinkUseCase {
     }
 
     // validar se o link esta ativo
-    if (!link.isActive()) {
+    if (link.isActive()) {
       return left(new ResourceNotFoundError())
     }
 

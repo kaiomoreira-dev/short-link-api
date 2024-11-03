@@ -1,16 +1,20 @@
 import { InMemoryLinksRepository } from 'test/repositories/in-memory-links-repository'
 import { RedirectToLinkUseCase } from './redirect-to-link'
 import { CreateShortLinkUseCase } from './create-short-link'
+import { MockEnvService } from 'test/env/faker-env'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
 let inMemoryLinksRepository: InMemoryLinksRepository
+let mockEnv: MockEnvService
 let stu: RedirectToLinkUseCase
 let createShortLinkUseCase: CreateShortLinkUseCase
 
 describe('Redirect To Link', () => {
   beforeEach(() => {
     inMemoryLinksRepository = new InMemoryLinksRepository()
+    mockEnv = new MockEnvService()
     createShortLinkUseCase = new CreateShortLinkUseCase(inMemoryLinksRepository)
-    stu = new RedirectToLinkUseCase(inMemoryLinksRepository)
+    stu = new RedirectToLinkUseCase(inMemoryLinksRepository, mockEnv)
   })
 
   it('should be redirect to link by short code', async () => {
@@ -20,10 +24,8 @@ describe('Redirect To Link', () => {
     })
 
     if (result.isRight()) {
-      await inMemoryLinksRepository.create(result.value.link)
-
       const resultRedirect = await stu.execute({
-        shortCode: result.value.link.shortUrl.value.split('/')[3],
+        shortCode: result.value.link.shortUrl.value,
       })
 
       expect(resultRedirect.isRight()).toBeTruthy()
@@ -43,13 +45,24 @@ describe('Redirect To Link', () => {
 
     if (result.isRight()) {
       const resultFindLink = await stu.execute({
-        shortCode: result.value.link.shortUrl.value.split('/')[3],
+        shortCode: result.value.link.shortUrl.value,
       })
 
       expect(resultFindLink.isRight()).toBeTruthy()
       if (resultFindLink.isRight()) {
         expect(resultFindLink.value.link.clicks).not.toEqual(0)
       }
+    }
+  })
+
+  it('should not be redirect to link with invalid short code', async () => {
+    const result = await stu.execute({
+      shortCode: 'invalid-short-code',
+    })
+
+    expect(result.isLeft()).toBeTruthy()
+    if (result.isLeft()) {
+      expect(result.value).toBeInstanceOf(ResourceNotFoundError)
     }
   })
 })

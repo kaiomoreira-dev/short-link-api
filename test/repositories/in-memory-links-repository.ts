@@ -7,7 +7,9 @@ export class InMemoryLinksRepository implements LinksRepository {
   links: Link[] = []
 
   async findByShortCode(shortCode: string): Promise<Link | null> {
-    const link = this.links.find((item) => item.shortUrl.value === shortCode)
+    const link = this.links.find(
+      (item) => item.shortUrl.value.slice(-6) === shortCode.slice(-6),
+    )
 
     if (!link) {
       return null
@@ -58,10 +60,6 @@ export class InMemoryLinksRepository implements LinksRepository {
     const findIndexLink = this.links.findIndex((item) => item.id === id)
 
     this.links[findIndexLink].originalUrl = originalUrl
-
-    if (userId) {
-      this.links[findIndexLink].userId = userId
-    }
 
     return this.links[findIndexLink]
   }

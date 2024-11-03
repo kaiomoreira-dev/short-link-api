@@ -2,6 +2,8 @@ import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repos
 import { RegisterUserUsecase } from './register-user-usecase'
 import { faker } from '@faker-js/faker'
 import { FakerHasher } from 'test/cryptography/faker-hasher'
+import { makeUser } from 'test/factories/make-user'
+import { UserAlreadyExistsError } from '../errors/user-already-exists-error'
 
 let inMemoryUserRepository: InMemoryUsersRepository
 let fakerHash: FakerHasher
@@ -15,15 +17,10 @@ describe('Register User', () => {
   })
 
   it('should be able to register a new user', async () => {
-    const result = await stu.execute({
-      email: 'joe@me.com',
-      name: faker.person.fullName(),
-      password: faker.internet.password(),
-    })
+    const user = makeUser()
+    const result = await stu.execute(user)
 
     if (result.isRight()) {
-      await inMemoryUserRepository.create(result.value.user)
-
       expect(result.isRight()).toBeTruthy()
       expect(result.value).toEqual({
         user: result.value.user,
@@ -43,6 +40,26 @@ describe('Register User', () => {
     if (result.isRight()) {
       expect(result.isRight()).toBeTruthy()
       expect(inMemoryUserRepository.items[0].password).toEqual(hashedPassword)
+    }
+  })
+
+  it('should not be able to register user with invalid email', async () => {
+    const user = makeUser({
+      email: 'joeKlin@me',
+      password: '159753',
+    })
+
+    await inMemoryUserRepository.create(user)
+
+    const result = await stu.execute({
+      email: 'joeKlin@me',
+      name: faker.person.fullName(),
+      password: '159753',
+    })
+
+    expect(result.isLeft()).toBeTruthy()
+    if (result.isLeft()) {
+      expect(result.value).toBeInstanceOf(UserAlreadyExistsError)
     }
   })
 })
