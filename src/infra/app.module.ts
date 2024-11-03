@@ -4,6 +4,7 @@ import { envSchema } from '@/infra/env/env'
 import { AuthModule } from '@/infra/auth/auth.module'
 import { HttpModule } from '@/infra/http/http.module'
 import { EnvModule } from '@/infra/env/env.module'
+import { SentryModule } from '@sentry/nestjs/setup';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { EnvModule } from '@/infra/env/env.module'
     AuthModule,
     HttpModule,
     EnvModule,
+    SentryModule.forRoot(),
   ],
   providers: [],
 })

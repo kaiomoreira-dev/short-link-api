@@ -7,7 +7,6 @@ import {
   Post,
   UsePipes,
 } from '@nestjs/common'
-import bcryptjs from 'bcryptjs'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
 import { RegisterUserUsecase } from '@/domain/short-link/usecases/users/register-user-usecase'

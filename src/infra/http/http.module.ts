@@ -16,10 +16,12 @@ import { DeleteShortLinkUseCase } from '@/domain/short-link/usecases/links/delet
 import { EditShortLinkController } from './controllers/links/edit-link.controller'
 import { EditShortLinkUseCase } from '@/domain/short-link/usecases/links/edit-link'
 import { EnvModule } from '../env/env.module'
+import { SentryController } from './controllers/monitoring/sentry.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, EnvModule],
   controllers: [
+    SentryController,
     CreateShortLinkController,
     FetchLinkController,
     RedirectToLinkController,

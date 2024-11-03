@@ -1,3 +1,4 @@
+import "@/infra/http/monitoring/sentry/sentry";
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { EnvService } from './env/env.service'
