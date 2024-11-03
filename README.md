@@ -5,7 +5,18 @@
 <h1 align="center"> Short Link API </h1>
 
 ## Description
-* Aplicação para encurtar link 
+* Deverá ser implementado um projeto com NodeJS na última versão estável, sendo construído como API REST. Leve em consideração que o sistema será implementado em uma infraestrutura que escala verticalmente.
+  O sistema deve possibilitar o cadastro de usuários e autenticação dos mesmos.
+  O sistema deve possibilitar que a partir de um url enviado, ele seja encurtado para no máximo 6 caracteres. Exemplo:
+  Entrada: https://teddy360.com.br/material/marco-legal-das-garantias-sancionado-entenda-o-que-muda/
+  Saída: http://localhost/aZbKq7
+  Qualquer um pode solicitar que o URL seja encurtado e para encurtar deve existir apenas um endpoint, mas caso seja um usuário autenticado, o sistema deve registrar que o URL pertence ao usuário. 
+  Um usuário autenticado pode listar, editar o endereço de destino e excluir URLs encurtadas por ele.
+  Todo acesso a qualquer URL encurtado deve ser contabilizado no sistema.
+  Quando um usuário listar os urls deve aparecer na listagem a quantidade de cliques.
+  Todos os registros devem ter uma forma de saber quando foram atualizados.
+  Os registros só poderão ser deletados logicamente do banco, ou seja, deverá ter um campo que guarda a data de exclusão do registro, caso ela esteja nula é porque ele é válido, caso esteja preenchida é porque ele foi excluído e nenhuma operação de leitura ou escrita pode ser realizada por ele.
+
 
 ## Features
 * Implementar uma arquitetura de microsserviços: Separar o sistema em serviços independentes permite escalar componentes específicos conforme a necessidade, além de facilitar a manutenção e o desenvolvimento de novas funcionalidades sem afetar o sistema como um todo.
