@@ -38,6 +38,7 @@ describe('Fetch Short Link', () => {
 
     expect(result.isRight()).toBeTruthy()
     if (result.isRight()) {
+      console.log(result.value.links)
       expect(result.isRight()).toBeTruthy()
       expect(result.value.links).toHaveLength(3)
     }
